@@ -1,14 +1,16 @@
 # Dashboard
 
--   React v17.0.1
--   Webpack v5.10.0
--   TypeScript v4.1.2
--   Tailwind Css v2.0.2
+Webpack 5 boilerplate forked from [glook/webpack-typescript-react](https://github.com/glook/webpack-typescript-react)
+
+-   React v17.0.2
+-   Webpack v5.28.0
+-   TypeScript v4.2.3
+-   Tailwind Css v2.0.4
 
 ## Quick start
 
--   npm v6.14.8
--   node v14.15.1
+-   npm v7.6.3
+-   node v15.12.0
 
 To run this locally:
 
