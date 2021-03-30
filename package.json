@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:kavoos/dashboard.git"
+    "url": "git@github.com:kavoos/d3-dashboard.git"
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",
