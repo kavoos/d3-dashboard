@@ -1,0 +1,25 @@
+@layer components {
+  .button {
+    @apply flex flex-row h-7 text-white mt-2 rounded-l-sm focus:outline-none hover:text-blue-gray-900 hover:bg-blue-gray-50;
+  }
+
+  .button-title {
+    @apply flex flex-1 font-light text-sm;
+  }
+
+  .button-title-container {
+    @apply flex flex-col pl-2 my-auto overflow-hidden transition-box duration-500 ease-in-out;
+  }
+
+  .button-icon {
+    @apply w-4 h-4 mx-5 my-auto;
+  }
+
+  .button-icon-container {
+    @apply w-14 h-4 my-auto;
+  }
+
+  .expanded-icon {
+    @apply transform duration-500 ease-in-out;
+  }
+}

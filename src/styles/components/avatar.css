@@ -1,0 +1,17 @@
+@layer components {
+  .avatar {
+    @apply flex flex-row text-white mb-6;
+  }
+
+  .avatar-name {
+    @apply flex flex-1 items-center font-medium text-lg;
+  }
+
+  .avatar-name-container {
+    @apply flex flex-col pl-2 my-6 overflow-hidden transition-all duration-500 ease-in-out;
+  }
+
+  .avatar-placeholder {
+    @apply transition-all duration-500 ease-in-out my-auto;
+  }
+}
