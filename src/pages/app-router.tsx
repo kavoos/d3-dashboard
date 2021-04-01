@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { FinancePage } from './finance-page'
-import { HealthPage } from './health-page'
+import { CovidPage } from './health-page'
 import { HomePage } from './home-page'
 import { NoMatchPage } from './no-match-page'
 import { SettingsPage } from './settings-page'
@@ -24,7 +24,7 @@ export const AppRouter: FC = () => {
         >
           <Switch location={location}>
             <Route path="/" exact component={HomePage} />
-            <Route path="/health" component={HealthPage} />
+            <Route path="/health" component={CovidPage} />
             <Route path="/finance" component={FinancePage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/support" component={SupportPage} />

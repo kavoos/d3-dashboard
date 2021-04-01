@@ -10,7 +10,7 @@ const fetchAdministeredVaccines = async () => {
   return await response.text()
 }
 
-export const HealthPage: FC = () => {
+export const CovidPage: FC = () => {
   const { execute, status, data, error } = useAsync<string>(fetchAdministeredVaccines, true)
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const HealthPage: FC = () => {
 
   return (
     <div className="page">
-      <div className="page-title">Health Page</div>
+      <div className="page-title">COVID 19</div>
     </div>
   )
 }

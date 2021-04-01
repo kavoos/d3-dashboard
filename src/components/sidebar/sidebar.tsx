@@ -3,7 +3,7 @@ import { Avatar } from '../avatar/avatar'
 import { ExpandButton } from '../button/expand-button'
 import { SettingsButton } from '../button/settings-button'
 import { SupportButton } from '../button/support-button'
-import { HealthPageButton } from '../button/health-page-button'
+import { CovidPageButton } from '../button/covid-page-button'
 import { FinancePageButton } from '../button/finance-page-button'
 import { Spacer } from '../spacer/spacer'
 
@@ -26,7 +26,7 @@ export const Sidebar: FC = () => {
       className={`sidebar ${expanded ? 'w-56' : 'w-18 '}`}
     >
       <Avatar expanded={expanded} />
-      <HealthPageButton
+      <CovidPageButton
         expanded={expanded}
         onClick={() => navigate('/health')}
       />
