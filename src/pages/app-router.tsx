@@ -24,7 +24,7 @@ export const AppRouter: FC = () => {
         >
           <Switch location={location}>
             <Route path="/" exact component={HomePage} />
-            <Route path="/health" component={CovidPage} />
+            <Route path="/covid-19-be" component={CovidPage} />
             <Route path="/finance" component={FinancePage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/support" component={SupportPage} />

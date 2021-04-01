@@ -21,7 +21,7 @@ export const CovidPage: FC = () => {
 
   return (
     <div className="page">
-      <div className="page-title">COVID 19</div>
+      <div className="page-title">COVID-19 (Belgium)</div>
     </div>
   )
 }

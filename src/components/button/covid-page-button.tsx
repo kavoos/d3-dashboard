@@ -17,7 +17,7 @@ export const CovidPageButton: FC<Props> = (props: Props) => {
       className="button"
       expanded={expanded}
       onClick={onClick}
-      title="COVID 19"
+      title="COVID-19 (Belgium)"
       icon={
         <CoronaVirusIcon
           className="button-icon"

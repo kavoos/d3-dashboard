@@ -30,19 +30,19 @@ export const Sidebar: FC = () => {
         expanded={expanded}
         onClick={() => navigate('/health')}
       />
-      <FinancePageButton
+      {/* <FinancePageButton
         expanded={expanded}
         onClick={() => navigate('/finance')}
-      />
+      /> */}
       <Spacer />
-      <SupportButton
+      {/* <SupportButton
         expanded={expanded}
         onClick={() => navigate('/support')}
       />
       <SettingsButton
         expanded={expanded}
         onClick={() => navigate('/settings')}
-      />
+      /> */}
       <ExpandButton
         expanded={expanded}
         onClick={() => setExpanded(!expanded)}
