@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react'
 // import * as d3 from 'd3'
 import { useAsync } from '@src/hooks/use-async'
 import '@styles/pages/pages.css'
+import { IndeterminateProgressBar } from '@src/components/progress-bar/indeterminate-progress-bar'
 
 const URL_COVID19BE_VACC = 'https://epistat.sciensano.be/Data/COVID19BE_VACC.csv'
 
@@ -11,10 +12,9 @@ const fetchAdministeredVaccines = async () => {
 }
 
 export const CovidPage: FC = () => {
-  const { execute, status, data, error } = useAsync<string>(fetchAdministeredVaccines, true)
+  const { status, data } = useAsync<string>(fetchAdministeredVaccines, true)
 
   useEffect(() => {
-    console.log('**************************************')
     console.log('status:', status)
     console.log('data: ', data)
   }, [status])
@@ -22,6 +22,7 @@ export const CovidPage: FC = () => {
   return (
     <div className="page">
       <div className="page-title">COVID-19 (Belgium)</div>
+      {status === 'pending' && <IndeterminateProgressBar />}
     </div>
   )
 }

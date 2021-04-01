@@ -1,0 +1,21 @@
+@layer components {
+  .slider {
+    @apply absolute overflow-x-hidden h-1.5 w-full;
+  }
+
+  .line {
+    @apply absolute opacity-40 bg-blue-gray-900 h-1.5 w-3/2;
+  }
+
+  .subline {
+    @apply absolute bg-blue-gray-900 h-1.5;
+  }
+
+  .inc {
+    @apply animate-increase;
+  }
+
+  .dec {
+    @apply animate-decrease;
+  }
+}

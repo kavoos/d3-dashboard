@@ -6,6 +6,10 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      animation: {
+        'increase': 'increase 2s infinite',
+        'decrease': 'decrease 2s 0.5s infinite'
+      },
       colors: {
         'blue-gray': {
           '50': '#ECEFF1',
@@ -23,11 +27,34 @@ module.exports = {
       fontFamily: {
         'sans': ['Titillium Web', 'Sans-serif']
       },
+      keyframes: {
+        'increase': {
+          'from': {
+            'left': '-5%',
+            'width': '5%'
+          },
+          'to': {
+            'left': '-130%',
+            'width': '100%'
+          }
+        },
+        'decrease': {
+          'from': {
+            'left': '-80%',
+            'width': '80%'
+          },
+          'to': {
+            'left': '100%',
+            'width': '10%'
+          }
+        }
+      },
       transitionProperty: {
         'box': 'width, height'
        },
       width: {
-        '18': '4.5rem'
+        '18': '4.5rem',
+        '3/2': '150%'
       }
     }
   },
@@ -38,3 +65,4 @@ module.exports = {
   },
   plugins: []
 }
+

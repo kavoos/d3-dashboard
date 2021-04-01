@@ -1,32 +1,32 @@
 @layer components {
   .page-container {
-    @apply relative flex-1 px-8 py-10;
+    @apply relative flex-1;
   }
 
   .page {
-    @apply absolute;
+    @apply absolute w-full;
   }
 
   .page-title {
-    @apply font-extralight text-3xl;
+    @apply font-extralight text-3xl px-4 py-6 shadow;
   }
-  
+
   .page-enter {
     @apply opacity-0;
     transform: scale(1.1);
   }
-  
+
   .page-enter-active {
     @apply opacity-100;
     transform: scale(1);
     transition: opacity 300ms, transform 300ms;
   }
-  
+
   .page-exit {
     @apply opacity-100;
     transform: scale(1);
   }
-  
+
   .page-exit-active {
     @apply opacity-0;
     transform: scale(0.9);
