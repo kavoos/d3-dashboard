@@ -28,7 +28,7 @@ export const Sidebar: FC = () => {
       <Avatar expanded={expanded} />
       <CovidPageButton
         expanded={expanded}
-        onClick={() => navigate('/health')}
+        onClick={() => navigate('/covid-19-be')}
       />
       {/* <FinancePageButton
         expanded={expanded}

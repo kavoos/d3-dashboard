@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { FinancePage } from './finance-page'
-import { CovidPage } from './health-page'
+import { CovidPage } from './covid-page'
 import { HomePage } from './home-page'
 import { NoMatchPage } from './no-match-page'
 import { SettingsPage } from './settings-page'
