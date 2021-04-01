@@ -4,11 +4,11 @@
   }
 
   .line {
-    @apply absolute opacity-40 bg-blue-gray-900 h-1.5 w-3/2;
+    @apply absolute opacity-40 bg-primary-dark h-1.5 w-3/2;
   }
 
   .subline {
-    @apply absolute bg-blue-gray-900 h-1.5;
+    @apply absolute bg-primary-dark h-1.5;
   }
 
   .inc {
