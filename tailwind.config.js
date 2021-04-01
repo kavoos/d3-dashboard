@@ -22,7 +22,11 @@ module.exports = {
           '700': '#455A64',
           '800': '#37474F',
           '900': '#263238'
-        }
+        },
+        'primary-dark': '#1D1F20',
+        'secondary': '#F9DCE1',
+        'primary': '#36393A',
+        'secondary-light': '#F7F1F8'
       },
       fontFamily: {
         'sans': ['Titillium Web', 'Sans-serif']

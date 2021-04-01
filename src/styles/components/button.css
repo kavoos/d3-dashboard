@@ -1,6 +1,6 @@
 @layer components {
   .button {
-    @apply flex flex-row h-7 whitespace-nowrap text-white fill-current mt-2 rounded-l-sm focus:outline-none hover:text-blue-gray-900 hover:bg-blue-gray-50;
+    @apply flex flex-row h-7 whitespace-nowrap text-secondary fill-current mt-2 rounded-l-sm focus:outline-none hover:bg-primary;
   }
 
   .button-title {

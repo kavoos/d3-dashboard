@@ -1,6 +1,6 @@
 @layer components {
   .avatar {
-    @apply flex flex-row text-white mb-6;
+    @apply flex flex-row text-secondary mb-6;
   }
 
   .avatar-name {

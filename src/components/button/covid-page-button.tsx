@@ -4,6 +4,7 @@ import CoronaVirusIcon from '@images/coronavirus.svg'
 import { Button } from './button'
 
 import '@styles/components/button.css'
+import { useLocation } from 'react-router-dom'
 
 interface Props {
   expanded: boolean,
@@ -12,9 +13,12 @@ interface Props {
 
 export const CovidPageButton: FC<Props> = (props: Props) => {
   const { expanded, onClick } = props
+
+  const location = useLocation()
+
   return (
     <Button
-      className="button"
+      className={`button${location.pathname === '/covid-19-be' ? ' bg-primary' : ''}`}
       expanded={expanded}
       onClick={onClick}
       title="COVID-19 (Belgium)"
