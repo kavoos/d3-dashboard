@@ -27,13 +27,33 @@ export const CovidPage: FC = () => {
 
   const getVaccineCountPerGender = (d: d3.DSVRowArray<string>, dose: Dose) => {
     const genders: Gender[] = ['F', 'M', 'NA']
-    const colors = ['#B0DDC2', '#DBC1E1', '#F8C296']
+    const colors = [
+      '#ef9a9a',
+      '#F48FB1',
+      '#CE93D8',
+      '#B39DDB',
+      '#9FA8DA',
+      '#90CAF9',
+      '#81D4FA',
+      '#80DEEA',
+      '#80CBC4',
+      '#A5D6A7',
+      '#C5E1A5',
+      '#E6EE9C',
+      '#FFF59D',
+      '#FFE082',
+      '#FFCC80',
+      '#FFAB91',
+      '#BCAAA4',
+      '#EEEEEE',
+      '#B0BEC5'
+    ]
     const vaccineCountPerGender: VaccinePerGender[] = []
     genders.forEach((g, i) => {
       const r: VaccinePerGender = {
         gender: g,
         count: 0,
-        color: colors[i]
+        color: colors[Math.ceil(colors.length / genders.length) * i]
       }
 
       d.forEach(i => {
@@ -80,6 +100,7 @@ export const CovidPage: FC = () => {
       const MARGIN_X = 24
       const MARGIN_Y = 32
       const RADIUS = Math.min(WIDTH, HEIGHT) / 2 - Math.min(MARGIN_X, MARGIN_Y)
+      const LEGEND_GAP = 20
 
       const CHART_TITLE = 'Total'
 
@@ -131,6 +152,7 @@ export const CovidPage: FC = () => {
           .data(pie(vaccineCountPerGender))
           .enter()
           .append('path')
+          .attr('class', d => d.data.gender)
           .attr('d', arc)
           .attr('fill', d => d.data.color)
           .attr('stroke', '#36393A')
@@ -172,10 +194,14 @@ export const CovidPage: FC = () => {
             d3
               .select('.chart-title')
               .text(selectedGender ? displayGender(selectedGender.gender) : CHART_TITLE)
+              .transition()
+              .attr('y', selectedGender ? -16 : -8)
 
             d3
               .select('.chart-subtitle-1')
               .text(numberWithCommas(selectedGender ? selectedGender.count : total))
+              .transition()
+              .attr('y', selectedGender ? 8 : 16)
 
             let percentage = ''
             if (selectedGender) percentage = getStringPercentage(selectedGender.count / total * 100)
@@ -183,6 +209,8 @@ export const CovidPage: FC = () => {
             d3
               .select('.chart-subtitle-2')
               .text(percentage)
+              .transition()
+              .attr('y', selectedGender ? 28 : 36)
 
             updateDonut()
           })
@@ -195,6 +223,35 @@ export const CovidPage: FC = () => {
         .attr('r', RADIUS * 0.55)
         .attr('fill', '#36393A')
         .style('cursor', 'pointer')
+        .on('click', () => {
+          const oldPath = d3.select('.clicked')
+          if (oldPath.node()) {
+            pathAnimation(oldPath, false)
+            oldPath.classed('clicked', false)
+          }
+
+          d3
+            .select('.chart-title')
+            .text(CHART_TITLE)
+            .transition()
+            .attr('y', -8)
+
+          d3
+            .select('.chart-subtitle-1')
+            .text(numberWithCommas(total))
+            .transition()
+            .attr('y', 16)
+
+          d3
+            .select('.chart-subtitle-2')
+            .text('')
+            .transition()
+            .attr('y', 36)
+
+          selectedGender = null
+
+          updateDonut()
+        })
 
       g
         .append('text')
@@ -230,6 +287,84 @@ export const CovidPage: FC = () => {
         .text('')
 
       updateDonut()
+
+      const legend = g
+        .append('g')
+        .attr('class', 'legend')
+        .selectAll('g')
+        .data(vaccineCountPerGender)
+        .enter()
+        .append('g')
+        .attr('transform', (_, i) => `translate(${RADIUS + MARGIN_X * 2}, ${-RADIUS + MARGIN_Y / 2 + i * LEGEND_GAP})`)
+        .style('cursor', 'pointer')
+        .on('mouseover', (_, d) => {
+          const path = d3.select(`.${d.gender}`)
+          if (!path.classed('clicked')) pathAnimation(path, true)
+        })
+        .on('mouseout', (_, d) => {
+          const path = d3.select(`.${d.gender}`)
+          if (!path.classed('clicked')) pathAnimation(path, false)
+        })
+        .on('click', (_, d) => {
+          const path = d3.select(`.${d.gender}`)
+          const clicked = path.classed('clicked')
+          pathAnimation(path, !clicked)
+
+          if (!clicked) {
+            const oldPath = d3.select('.clicked')
+            if (oldPath.node()) {
+              pathAnimation(oldPath, false)
+              oldPath.classed('clicked', false)
+            }
+          }
+
+          path.classed('clicked', !clicked)
+
+          if (selectedGender?.gender === d.gender) {
+            selectedGender = null
+          } else {
+            selectedGender = d
+          }
+
+          d3
+            .select('.chart-title')
+            .text(selectedGender ? displayGender(selectedGender.gender) : CHART_TITLE)
+            .transition()
+            .attr('y', selectedGender ? -16 : -8)
+
+          d3
+            .select('.chart-subtitle-1')
+            .text(numberWithCommas(selectedGender ? selectedGender.count : total))
+            .transition()
+            .attr('y', selectedGender ? 8 : 16)
+
+          let percentage = ''
+          if (selectedGender) percentage = getStringPercentage(selectedGender.count / total * 100)
+
+          d3
+            .select('.chart-subtitle-2')
+            .text(percentage)
+            .transition()
+            .attr('y', selectedGender ? 28 : 36)
+
+          updateDonut()
+        })
+
+      legend
+        .append('circle')
+        .attr('r', 8)
+        .attr('rx', 18)
+        .attr('fill', d => d.color)
+
+      legend
+        .append('text')
+        .attr('x', 16)
+        .attr('y', 0.75)
+        .attr('text-anchor', 'start')
+        .attr('alignment-baseline', 'middle')
+        .attr('font-size', '12px')
+        .attr('fill', '#F9DCE1')
+        .text(d => displayGender(d.gender))
     }
   }, [status])
 
@@ -238,7 +373,7 @@ export const CovidPage: FC = () => {
       <div className="page-title">COVID-19 (Belgium)</div>
       {status === 'pending' && <IndeterminateProgressBar />}
       {status === 'success' &&
-        <div className="page-block">
+        <div className="page-block" style={{ width: 450 }}>
           <div className="page-subtitle-1">Vaccinated people by gender</div>
           <div className="page-subtitle-2">At least 1 dose</div>
           <svg ref={svgContext} className='vaccine-a-count-per-gender' />
