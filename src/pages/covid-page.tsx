@@ -6,11 +6,11 @@ import { IndeterminateProgressBar } from '@src/components/progress-bar/indetermi
 
 const URL_COVID19BE_VACC = 'https://epistat.sciensano.be/Data/COVID19BE_VACC.csv'
 
-type Sex = 'F' | 'M' | 'NA'
+type Gender = 'F' | 'M' | 'NA'
 type Dose = 'A' | 'B'
 
-interface VaccinePerSex {
-  sex: Sex
+interface VaccinePerGender {
+  gender: Gender
   count: number
   color: string
 }
@@ -25,41 +25,63 @@ export const CovidPage: FC = () => {
 
   const svgContext = useRef<null | SVGSVGElement>(null)
 
-  const getVaccineCountPerSex = (d: d3.DSVRowArray<string>, dose: Dose) => {
-    const sexGroups: Sex[] = ['F', 'M', 'NA']
+  const getVaccineCountPerGender = (d: d3.DSVRowArray<string>, dose: Dose) => {
+    const genders: Gender[] = ['F', 'M', 'NA']
     const colors = ['#B0DDC2', '#DBC1E1', '#F8C296']
-    const vaccineCountPerSex: VaccinePerSex[] = []
-    sexGroups.forEach((s, i) => {
-      const r: VaccinePerSex = {
-        sex: s,
+    const vaccineCountPerGender: VaccinePerGender[] = []
+    genders.forEach((g, i) => {
+      const r: VaccinePerGender = {
+        gender: g,
         count: 0,
         color: colors[i]
       }
 
       d.forEach(i => {
         if (i['DOSE'] === dose) {
-          if (i['SEX'] === s) r.count += +i['COUNT']!
-          else if (i['SEX'] !== 'F' && i['SEX'] !== 'M') r.count += +i['COUNT']!
+          if (i['SEX'] === g) r.count += i['COUNT'] ? +i['COUNT'] : 0
+          else if (i['SEX'] !== 'F' && i['SEX'] !== 'M') r.count += i['COUNT'] ? +i['COUNT'] : 0
         }
       })
 
-      vaccineCountPerSex.push(r)
+      vaccineCountPerGender.push(r)
     })
-    return vaccineCountPerSex
+    return vaccineCountPerGender
+  }
+
+  const numberWithCommas = (n: number) => {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
+  const displayGender = (g: Gender) => {
+    switch (g) {
+      case 'F':
+        return 'Female'
+      case 'M':
+        return 'Male'
+      default:
+        return 'Other'
+    }
+  }
+
+  const getStringPercentage = (n: number) => {
+    return `(${n.toFixed(2)}%)`
   }
 
   useEffect(() => {
-    console.log('status:', status)
     if (data) {
       const parsedData = d3.csvParse(data)
-      const vaccineCountPerSex = getVaccineCountPerSex(parsedData, 'A')
+      const vaccineCountPerGender = getVaccineCountPerGender(parsedData, 'A')
+      const total = vaccineCountPerGender.reduce((prev, current) => prev + current.count, 0)
 
-      console.log('vaccineCountPerSex:', vaccineCountPerSex)
+      let selectedGender: VaccinePerGender | null = null
 
-      const WIDTH = 300
+      const WIDTH = 600
       const HEIGHT = 300
-      const MARGIN = 24
-      const RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN
+      const MARGIN_X = 24
+      const MARGIN_Y = 32
+      const RADIUS = Math.min(WIDTH, HEIGHT) / 2 - Math.min(MARGIN_X, MARGIN_Y)
+
+      const CHART_TITLE = 'Total'
 
       const context = d3
         .select(svgContext.current)
@@ -68,14 +90,14 @@ export const CovidPage: FC = () => {
 
       const g = context
         .append('g')
-        .attr('transform', `translate(${WIDTH / 2}, ${HEIGHT / 2})`)
+        .attr('transform', `translate(${RADIUS + MARGIN_X}, ${RADIUS + MARGIN_Y})`)
 
       const pathAnimation = (path: any, emphasize: boolean) => {
         if (emphasize) {
           path.transition().attr(
             'd',
             d3
-              .arc<d3.PieArcDatum<VaccinePerSex>>()
+              .arc<d3.PieArcDatum<VaccinePerGender>>()
               .innerRadius(RADIUS * 0.6)
               .outerRadius(RADIUS * 1.1)
           )
@@ -86,7 +108,7 @@ export const CovidPage: FC = () => {
             .attr(
               'd',
               d3
-                .arc<d3.PieArcDatum<VaccinePerSex>>()
+                .arc<d3.PieArcDatum<VaccinePerGender>>()
                 .innerRadius(RADIUS * 0.6)
                 .outerRadius(RADIUS)
             )
@@ -95,18 +117,18 @@ export const CovidPage: FC = () => {
 
       const updateDonut = () => {
         const pie = d3
-          .pie<VaccinePerSex>()
+          .pie<VaccinePerGender>()
           .sort(null)
           .value(d => d.count)
 
         const arc = d3
-          .arc<d3.PieArcDatum<VaccinePerSex>>()
+          .arc<d3.PieArcDatum<VaccinePerGender>>()
           .innerRadius(RADIUS * 0.6)
           .outerRadius((_, i, j) => (d3.select(j[i]).classed('clicked') ? RADIUS * 1.1 : RADIUS))
 
         const arcs = g
           .selectAll('path')
-          .data(pie(vaccineCountPerSex))
+          .data(pie(vaccineCountPerGender))
           .enter()
           .append('path')
           .attr('d', arc)
@@ -114,6 +136,56 @@ export const CovidPage: FC = () => {
           .attr('stroke', '#36393A')
           .style('stroke-width', '1px')
           .style('cursor', 'pointer')
+          .on('mouseover', event => {
+            const target = event.target || event.srcElement
+            const path = d3.select(target)
+            if (!path.classed('clicked')) pathAnimation(path, true)
+          })
+          .on('mouseout', event => {
+            const target = event.target || event.srcElement
+            const path = d3.select(target)
+            if (!path.classed('clicked')) pathAnimation(path, false)
+          })
+          .on('click', (event, d) => {
+            const target = event.target || event.srcElement
+            const path = d3.select(target)
+            const clicked = path.classed('clicked')
+            pathAnimation(path, !clicked)
+
+            if (!clicked) {
+              const oldPath = d3.select('.clicked')
+              if (oldPath.node()) {
+                pathAnimation(oldPath, false)
+                oldPath.classed('clicked', false)
+              }
+            }
+
+            path.classed('clicked', !clicked)
+
+
+            if (selectedGender?.gender === d.data.gender) {
+              selectedGender = null
+            } else {
+              selectedGender = d.data
+            }
+
+            d3
+              .select('.chart-title')
+              .text(selectedGender ? displayGender(selectedGender.gender) : CHART_TITLE)
+
+            d3
+              .select('.chart-subtitle-1')
+              .text(numberWithCommas(selectedGender ? selectedGender.count : total))
+
+            let percentage = ''
+            if (selectedGender) percentage = getStringPercentage(selectedGender.count / total * 100)
+
+            d3
+              .select('.chart-subtitle-2')
+              .text(percentage)
+
+            updateDonut()
+          })
 
         arcs.exit().remove()
       }
@@ -124,6 +196,39 @@ export const CovidPage: FC = () => {
         .attr('fill', '#36393A')
         .style('cursor', 'pointer')
 
+      g
+        .append('text')
+        .attr('class', 'chart-title')
+        .attr('pointer-events', 'none')
+        .attr('y', -8)
+        .attr('text-anchor', 'middle')
+        .style('font-weight', '300')
+        .attr('font-size', '14px')
+        .attr('fill', '#F9DCE1')
+        .text(CHART_TITLE)
+
+      g
+        .append('text')
+        .attr('class', 'chart-subtitle-1')
+        .attr('pointer-events', 'none')
+        .attr('y', 16)
+        .attr('text-anchor', 'middle')
+        .style('font-weight', '300')
+        .attr('font-size', '16px')
+        .attr('fill', '#F9DCE1')
+        .text(numberWithCommas(total))
+
+      g
+        .append('text')
+        .attr('class', 'chart-subtitle-2')
+        .attr('pointer-events', 'none')
+        .attr('y', 36)
+        .attr('text-anchor', 'middle')
+        .style('font-weight', '300')
+        .attr('font-size', '12px')
+        .attr('fill', '#F9DCE1')
+        .text('')
+
       updateDonut()
     }
   }, [status])
@@ -132,7 +237,13 @@ export const CovidPage: FC = () => {
     <div className="page">
       <div className="page-title">COVID-19 (Belgium)</div>
       {status === 'pending' && <IndeterminateProgressBar />}
-      {status === 'success' && <svg ref={svgContext} className='upload-counts' />}
+      {status === 'success' &&
+        <div className="page-block">
+          <div className="page-subtitle-1">Vaccinated people by gender</div>
+          <div className="page-subtitle-2">At least 1 dose</div>
+          <svg ref={svgContext} className='vaccine-a-count-per-gender' />
+        </div>
+      }
     </div>
   )
 }

@@ -11,6 +11,18 @@
     @apply font-extralight text-3xl p-6;
   }
 
+  .page-subtitle-1 {
+    @apply font-extralight text-2xl;
+  }
+
+  .page-subtitle-2 {
+    @apply font-extralight text-xl;
+  }
+
+  .page-block {
+    @apply p-6 border border-secondary-light m-6;
+  }
+
   .page-enter {
     @apply opacity-0;
     transform: scale(1.1);
