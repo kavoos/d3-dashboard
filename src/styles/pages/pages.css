@@ -20,7 +20,11 @@
   }
 
   .page-block {
-    @apply p-6 border border-secondary-light m-6;
+    @apply p-6 border border-secondary-light m-6 max-w-screen-xl;
+  }
+
+  .page-row-2-col {
+    @apply grid grid-cols-2 gap-4;
   }
 
   .page-enter {
