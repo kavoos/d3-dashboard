@@ -14,9 +14,7 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.babel.js",
     "profile": "cross-env NODE_ENV=production webpack --profile --json --config webpack.config.babel.js > ./dist/profile.json && webpack-bundle-analyzer ./dist/profile.json",
     "start": "cross-env WEBPACK_IS_DEV_SERVER=true NODE_ENV=development webpack serve --config webpack.config.babel.js",
-    "release": "npm version patch",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "release": "npm version patch"
   },
   "repository": {
     "type": "git",
@@ -60,7 +58,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-webpack-plugin": "^2.4.1",
     "fork-ts-checker-webpack-plugin": "^6.0.6",
-    "gh-pages": "^3.1.0",
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.0.0-alpha.15",
     "import-sort-style-module-and-prefix": "^0.1.3",
