@@ -3,7 +3,6 @@ import { Route, Switch, useLocation } from 'react-router-dom'
 import { CovidPage } from './covid-page'
 import { HomePage } from './home-page'
 import { NoMatchPage } from './no-match-page'
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import '@styles/pages/pages.css'
 
@@ -12,20 +11,11 @@ export const AppRouter: FC = () => {
 
   return (
     <div className="page-container">
-      <TransitionGroup>
-        <CSSTransition
-          key={location.key}
-          timeout={300}
-          classNames="page"
-          unmountOnExit
-        >
-          <Switch location={location}>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/covid-19-be" component={CovidPage} />
-            <Route component={NoMatchPage} />
-          </Switch>
-        </CSSTransition>
-      </TransitionGroup>
+      <Switch location={location}>
+        <Route path="/" exact component={HomePage} />
+        <Route path="/covid-19-be" component={CovidPage} />
+        <Route component={NoMatchPage} />
+      </Switch>
     </div>
   )
 }
