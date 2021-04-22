@@ -1,17 +1,21 @@
 @layer components {
   .avatar {
-    @apply flex flex-row text-secondary mb-6;
+    @apply flex flex-row text-secondary mt-12 mb-9;
   }
 
   .avatar-name {
-    @apply flex flex-1 items-center font-medium text-lg;
+    @apply items-center truncate inline-block font-medium text-lg;
+  }
+
+  .avatar-title {
+    @apply items-center truncate inline-block font-medium text-xs;
   }
 
   .avatar-name-container {
-    @apply flex flex-col pl-2 my-6 overflow-hidden transition-all duration-500 ease-in-out;
+    @apply flex flex-col my-auto overflow-hidden transition-all duration-500 ease-in-out;
   }
 
   .avatar-placeholder {
-    @apply transition-all duration-500 ease-in-out my-auto;
+    @apply w-14 h-14 mx-2;
   }
 }

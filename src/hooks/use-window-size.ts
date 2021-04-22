@@ -31,7 +31,7 @@ export const useWindowSize = (): Size => {
 
     // Remove event listener on cleanup
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, []) // Empty array ensures effect is only run on mount and unmount
 
   return windowSize
 }

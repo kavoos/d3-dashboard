@@ -4,7 +4,7 @@
   }
 
   .page {
-    @apply absolute w-full;
+    @apply /* absolute */ w-full;
   }
 
   .page-title {

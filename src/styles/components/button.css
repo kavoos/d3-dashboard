@@ -1,22 +1,14 @@
 @layer components {
   .button {
-    @apply flex flex-row h-7 whitespace-nowrap text-secondary fill-current mt-2 focus:outline-none hover:bg-primary;
+    @apply flex flex-row h-14 whitespace-nowrap text-secondary fill-current focus:outline-none hover:bg-primary;
   }
 
   .button-title {
-    @apply flex flex-1 font-light text-sm;
-  }
-
-  .button-title-container {
-    @apply flex flex-col pl-2 my-auto overflow-hidden transition-box duration-500 ease-in-out;
+    @apply text-left truncate inline-block font-light text-xs my-auto transition-all duration-500 ease-in-out;
   }
 
   .button-icon {
-    @apply w-4 h-4 mx-5 my-auto;
-  }
-
-  .button-icon-container {
-    @apply w-14 h-4 my-auto;
+    @apply w-9 h-9 mx-4.5 my-auto;
   }
 
   .expanded-icon {

@@ -18,12 +18,8 @@ export const Button: FC<Props> = (props: Props) => {
       className={className}
       onClick={onClick}
     >
-      <div className="button-icon-container">
-        {icon}
-      </div>
-      <div className={`button-title-container ${expanded ? 'w-full' : 'w-0'}`}>
-        <div className="button-title">{title}</div>
-      </div>
+      {icon}
+      <div className={`button-title ${expanded ? 'w-36' : 'w-0'}`}>{title}</div>
     </button>
   )
 }

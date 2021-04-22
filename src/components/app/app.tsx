@@ -1,42 +1,46 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import { Sidebar } from '../sidebar/sidebar'
 import { AppRouter } from '@src/pages/app-router'
 import { BrowserRouter } from 'react-router-dom'
-import { useWindowSizeWithDebounce } from '@src/hooks/use-window-size'
+import { useMedia } from '@src/hooks/use-media'
+import { ScreenSize } from '@src/@types/screen'
 
 import '@styles/components/app.css'
 
-/**
- *  - `sm`	min-width: 640px
- *  - `md`	min-width: 768px
- *  - `lg`	min-width: 1024px
- *  - `xl`	min-width: 1280px
- *  - `2xl`	min-width: 1536px
- */
-type ScreenSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+const mediaBreakPoints = [
+  '(min-width: 1280px)',
+  '(min-width: 1024px)',
+  '(min-width: 768px)',
+  '(min-width: 640px)'
+]
 
-const getScreenSize = (width: number): ScreenSize => {
-  if (width < 768) return 'sm'
-  else if (width < 1024) return 'md'
-  else if (width < 1280) return 'lg'
-  else if (width < 1536) return 'xl'
-  else return '2xl'
-}
+const screenSizes: ScreenSize[] = ['2xl', 'xl', 'lg', 'md']
+
+// TODO:
+// sm => top/bottom - single column
+// md => top/bottom - single column
+// lg => sidebar - shortened - single column
+// xl => sidebar - shortened - double columns
+// 2xl => sidebar - expanded - double columns
 
 export const App: FC = () => {
-  const size = useWindowSizeWithDebounce()
+  const screenSize = useMedia<ScreenSize>(mediaBreakPoints, screenSizes, 'sm')
 
-  const [screenSize, setScreenSize] = useState<ScreenSize>()
-
-  useEffect(() => {
-    console.log(`w: ${size.width}px, h: ${size.height}px`)
-    console.log(getScreenSize(size.width || 0))
-  }, [size])
+  const isLargeScreen = (s: ScreenSize) => {
+    switch (s) {
+      case 'lg':
+      case 'xl':
+      case '2xl':
+        return true
+      default:
+        return false;
+    }
+  }
 
   return (
     <BrowserRouter>
       <div className='app'>
-        <Sidebar />
+        {isLargeScreen(screenSize) && <Sidebar />}
         <AppRouter />
       </div>
     </BrowserRouter>
